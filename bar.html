@@ -1,0 +1,27 @@
+var data=[12,20,33,25,22,26,56],bh = 50,bp = 5,
+    h = (bh+bp)*data.length,
+    w = 500;
+var svg = d3.select("#container")
+.append("svg")
+.attr("height",h)
+.attr("width",w)
+.attr("class","chart");
+var bar = svg.selectAll("g")
+.data(data)
+.enter()
+.append("g")
+.attr("transform",function(d,i) {return "translate(0,"+i*(bh+bp)+")";});//产生位置
+
+var scale = d3.scale.linear()
+ .domain([0,d3.max(data)])
+.range([0,w]);
+
+bar.append("rect")
+  .attr("width",function(d){return scale(d);})
+.attr("height",bh);//填充位置
+bar.append("text")
+.text(function(d) {return d;})
+.attr("x",function(d) {return scale(d);})//文本在x轴上也用比例尺进行设置
+.attr("y",(bh+bp)/2)
+.attr("text-anchor","end");//设置文本的填充
+//条形图
