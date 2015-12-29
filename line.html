@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <script src="E:\workspace\js\d3.v2.js"></script>
+  <title>Document</title>
+  <style>
+	#container{
+		background-color: #ddd;
+		height: 500px;
+		width: 500px;
+		float: right;
+	}
+	path {
+		fill:none;
+		stroke:steelblue;
+		stroke-width:2;
+	}
+  </style>
+ </head>
+ <body>
+  <div id="container">
+	
+  </div>
+  <script>
+	var h = 400,w = 400,mg = {l:20,r:20,t:30,b:30},
+		gh = h-mg.t-mg.b,
+		gw = w-mg.l-mg.r;
+	var dataset = [12,18,16,35,78,88,25,22,1,11];
+	var scale_x = d3.scale.linear()
+					.domain([0,dataset.length])
+					.range([0,gw]);
+	var scale_y = d3.scale.linear()
+					.domain([0,d3.max(dataset)])
+					.range([gh,0]);
+	var svg = d3.select("#container")
+				.append("svg")
+				.attr("height",h)
+				.attr("width",w);
+	var g = svg.append("g")
+				.attr("width",gw)
+				.attr("height",gh)
+				.attr("transform","translate("+mg.l+","+mg.t+")");
+	var lg = d3.svg.line()
+				.x(function(d,i){return scale_x(i);})
+				.y(function(d) {return scale_y(d);});
+	g.append("path")
+		.attr("d",lg(dataset));
+  </script>
+ </body>
+</html>
+<!-- 绘制图形须知首先是div然后再div里面嵌入svg，svg可以类比于html，然后在svg中由g元素的存在，可以类比于html中的div，最后在g里面作画即可-->
